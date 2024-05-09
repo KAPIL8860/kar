@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from urllib import request
 from django.views import View
@@ -72,8 +72,30 @@ class ProfileView(View):
 
         return render(request,"kar/registration.html",locals())
 
-# class PasswordResetView(PasswordChangeForm):
-#     pass
+def address(request):
+    add = Customer.objects.filter(user=request.user)
+    return render(request, 'kar/address.html', locals())
+
+class updateAddress(View):
+    def get(self,request,pk):
+        add = Customer.objects.get(pk=pk)
+        form = CustomerProfileForm(instance=add)
+        return render(request, 'kar/updateAddress.html', locals())
+    def post(self,request,pk):
+        form = CustomerProfileForm(request.POST)
+        if form.is_valid():
+            add = Customer.objects.get(pk=pk)
+            add.name = form.cleaned_data['name']
+            locality = form.clean_data['locality']
+            city = form.clean_data['city']
+            mobile = form.clean_data['mobile']
+            state = form.clean_data['state']
+            zipcode = form.clean_data['zipcode']
+            add.save()
+            messages.success(request,'Congractulations! profile saved successfully')
+        else:
+            messages.warning(request,'Invalid input data')
+        return redirect('address')
 
 
 

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,UsernameField , PasswordChangeForm
 from django.contrib.auth.models import User
+
 from .models import Customer
 
 
@@ -9,7 +10,6 @@ class LoginForm(AuthenticationForm):
     'class':'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs=
     {'autocomplete':'current-password','class':'form-control'}))
-
 
 
 class RegistrationForm(UserCreationForm):
@@ -21,6 +21,18 @@ class RegistrationForm(UserCreationForm):
     (attrs={'class':'form-control'}))
     password2 = forms.CharField(label='conform password',widget=forms.PasswordInput
     (attrs={'class':'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username','email','password1','password2']
+
+        class CustomerProfileForm(PasswordChangeForm):
+            old_password = forms.CharField(label='old Password', widget=forms.PasswordInput(attrs={'autofocus':'True','autocomplete':'current-password','class':'form-control'}))
+            new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'autofocus':'True','autocomplete':'current-password','class':'form-control'}))
+            new_password2 = forms.CharField(label='Conform Password', widget=forms.PasswordInput(attrs={'autofocus':'True','autocomplete':'current-password','class':'form-control'}))
+
+        class MyPasswordRestForm(PasswordChangeForm):
+            pass
 
 class CustomerProfileForm(forms.ModelForm):
     class Meta:
@@ -35,11 +47,11 @@ class CustomerProfileForm(forms.ModelForm):
             'zipcode':forms.NumberInput(attrs={'class':'form-control'}),
         }
 
-
-class MyPasswordResetForm(PasswordChangeForm):
-    pass
-
-class CustomerProfileForm(forms.ModelForm):
-    pass
-
+class MyPasswordChangeForm(PasswordChangeForm):
+    old_password= forms.CharField(label='old password',widget=forms.PasswordInput(attrs=
+    {'autofocus':'True','autocomplete':'current-password','class':'form=control'}))
+    new_password1=forms.CharField(label='New Password',widget=forms.PasswordInput(attrs=
+    {'autofocus':'True','autocomplete':'current-password','class':'form=control'}))
+    new_password2=forms.CharField(label='conform Password',widget=forms.PasswordInput(attrs=
+    {'autofocus':'True','Autofocus':''}))
 
