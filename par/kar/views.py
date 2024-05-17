@@ -4,7 +4,7 @@ from urllib import request
 from django.views import View
 from . models import Product
 from django.db.models import Count
-from . forms import RegistrationForm,PasswordChangeForm,CustomerProfileForm
+from . forms import RegistrationForm,CustomerProfileForm
 from django.contrib import messages
 from .models import Customer
 
@@ -96,8 +96,9 @@ class updateAddress(View):
         else:
             messages.warning(request,'Invalid input data')
         return redirect('address')
-
-
+    
+    def add_to_cart(request):
+        pass
 
 
 
